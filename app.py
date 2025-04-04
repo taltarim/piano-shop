@@ -64,5 +64,8 @@ def download():
     return send_from_directory('static/files', filename, as_attachment=True)
 
 # ✅ 반드시 마지막에 있어야 함!
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
