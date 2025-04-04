@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- 브라우저 탭 제목에 악보 제목 표시 -->
+  <title>{{ sheet.title }} - 악보 상세</title>
+
+  <!-- Toss Payments SDK -->
+  <script src="https://js.tosspayments.com/v1/payment"></script>
+</head>
+
+<body>
+
+  <!-- 악보 제목을 크게 표시 -->
+  <h1>{{ sheet.title }}</h1>
+
+  <!-- 악보 이미지 표시 -->
+  <img src="{{ url_for('static', filename='images/' + sheet.image | urlencode) }}" 
+       alt="{{ sheet.title }}" 
+       width="300">
+
+  <!-- 작곡가 정보 출력 -->
+  <p><strong>작곡가:</strong> {{ sheet.composer }}</p>
+
+  <!-- 가격 정보 출력 -->
+  <p><strong>가격:</strong> {{ sheet.price }}원</p>
+
+  <!-- 결제하기 버튼 -->
+  <button id="payBtn"
+  data-title="{{ sheet.title }}"
+  data-amount="{{ sheet.price | int }}"
+  data-id="{{ sheet.id }}">
+결제하기
+</button>
+
+  <br><br>
+
+  <!-- 홈(악보 리스트) 페이지로 돌아가는 링크 -->
+  <a href="{{ url_for('home') }}">← 목록으로 돌아가기</a>
+
+  <!-- Toss 결제 요청 스크립트 -->
+  <script>
+    window.addEventListener("load", function () {
+      const tossPayments = TossPayments("test_ck_5OWRapdA8dJLMLNvpBXnVo1zEqZK"); // ← 본인 키로 교체
+
+      const btn = document.getElementById("payBtn");
+      const amount = parseInt(btn.dataset.amount);
+      const title = btn.dataset.title;
+      const sheetId = btn.dataset.id;
+
+      btn.addEventListener("click", function () {
+        tossPayments.requestPayment('카드', {
+          amount: amount,
+          orderId: 'order_' + new Date().getTime(),
+          orderName: title,
+          customerName: "테스트 고객",
+          successUrl: `http://127.0.0.1:5000/success?sheet_id=${sheetId}`,
+          failUrl: "http://127.0.0.1:5000/fail"
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

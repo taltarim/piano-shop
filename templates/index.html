@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>악보 리스트 - Piano Shop</title>
+</head>
+<body>
+  <h1>🎼 악보 리스트</h1>
+  <ul>
+    {% for sheet in sheets %}
+      <li style="margin-bottom: 40px;">
+        <img src="{{ url_for('static', filename='images/' + sheet.image) }}" alt="{{ sheet.title }}" width="250">
+        <h2>{{ sheet.title }}</h2>
+        <p>작곡가: {{ sheet.composer }}</p>
+        <p>가격: {{ sheet.price }}원</p>
+        <a href="{{ url_for('sheet_detail', sheet_id=sheet.id) }}">
+          <button>자세히 보기</button>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+

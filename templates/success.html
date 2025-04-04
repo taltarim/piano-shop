@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>결제 완료</title>
+</head>
+<body>
+  <h1>🎉 결제가 완료되었습니다!</h1>
+  <p>잠시 후 PDF 파일이 자동으로 다운로드됩니다.</p>
+
+  <!-- 자동 다운로드를 위한 JS -->
+  <script>
+    setTimeout(() => {
+      // PDF 파일 경로를 백엔드에서 제공 (보안을 위해 /static 사용 안 함)
+      window.location.href = "/download?filename={{ sheet.pdf | urlencode }}";
+    }, 1000);
+  </script>
+</body>
+</html>
